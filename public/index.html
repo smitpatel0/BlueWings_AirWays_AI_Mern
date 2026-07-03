@@ -1,0 +1,476 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlueWings Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col min-h-[600px]">
+        
+        <div class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-sm">
+            <div>
+                <h1 class="font-bold text-base tracking-wide">BlueWings Airlines</h1>
+                <p class="text-[10px] text-blue-200">Self-Service Automation Hub</p>
+            </div>
+            <span class="bg-emerald-500 text-white text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider animate-pulse">DB Sync</span>
+        </div>
+
+        <div id="navigationTabs" class="flex border-b bg-slate-50 text-xs font-bold text-slate-500">
+            <button onclick="switchTab('book')" id="tabBook" class="w-1/2 py-3 text-center border-b-2 border-blue-600 text-blue-600 bg-white transition-all">1. Book Ticket</button>
+            <button onclick="switchTab('manage')" id="tabManage" class="w-1/2 py-3 text-center border-b-2 border-transparent hover:bg-slate-100 transition-all">2. Service Dashboard</button>
+        </div>
+
+        <div class="p-5 flex-1 flex flex-col justify-between">
+            
+            <div id="viewBookPanel" class="space-y-3">
+                <p class="text-xs text-slate-500">Provision structural test cases dynamically to verify production database integration pipelines.</p>
+                
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">First Name</label>
+                    <input type="text" id="bookFirst" placeholder="e.g., Amit" class="w-full border p-2 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Last Name</label>
+                    <input type="text" id="bookLast" placeholder="e.g., Kumar" class="w-full border p-2 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Flight Assignment Route</label>
+                    <select id="bookFlightSelect" class="w-full border bg-white p-2 text-sm rounded-lg outline-none">
+                        <option value="BW-101|DEL (Delhi)|BOM (Mumbai)">BW-101 : Delhi to Mumbai (08:00 AM)</option>
+                        <option value="BW-305|CCU (Kolkata)|MAA (Chennai)">BW-305 : Kolkata to Chennai (14:30 PM)</option>
+                    </select>
+                </div>
+
+                <button onclick="executeNewBooking()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 text-xs rounded-xl transition uppercase tracking-wider mt-2 shadow-md">Generate Ticket Entry</button>
+
+                <div id="bookingSuccessCard" class="hidden bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center space-y-1 animate-fade-in">
+                    <p class="text-xs text-emerald-800 font-bold">🎉 Database Records Updated!</p>
+                    <p id="successGeneratedPnr" class="text-base font-mono font-bold text-blue-700 tracking-widest bg-white inline-block px-4 py-1 border rounded-lg shadow-sm my-1"></p>
+                    <p class="text-[10px] text-slate-500">Switch to the "Service Dashboard" tab and authenticate using your Last Name to test.</p>
+                </div>
+            </div>
+
+            <div id="viewManageLoginPanel" class="hidden space-y-4">
+                <p class="text-xs text-slate-500">Retrieve global itinerary states via passwordless PNR identity match mapping.</p>
+                
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Booking Reference (PNR)</label>
+                    <input type="text" id="inputPnr" placeholder="6-char code (e.g., BW1234)" class="w-full border p-2.5 rounded-xl font-mono uppercase tracking-widest text-sm outline-none focus:ring-2 focus:ring-blue-500 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-600 uppercase mb-1">Passenger Last Name</label>
+                    <input type="text" id="inputLastName" placeholder="Case-insensitive verification matches" class="w-full border p-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition">
+                </div>
+                
+                <button onclick="verifyExistingBooking()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 text-xs rounded-xl transition uppercase tracking-wider shadow">Fetch Flight Status</button>
+
+                <div id="agentEscalationCard" class="hidden bg-rose-50 border border-rose-200 p-3.5 rounded-xl text-center space-y-2">
+                    <p class="text-xs text-rose-900 font-bold">⚠️ Security Lockout Imminent</p>
+                    <p class="text-[11px] text-rose-700">Multiple validation attempts failed. To guard system resources, please transition to a customer service agent instantly.</p>
+                    <a href="https://wa.me/1234567890" target="_blank" class="w-full block bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold py-2 text-xs rounded-xl transition tracking-wide uppercase">Connect to WhatsApp Support Agent</a>
+                </div>
+            </div>
+
+            <div id="viewDashboardPanel" class="hidden space-y-4">
+                <div id="statusHeaderBox" class="p-3 rounded-xl text-white shadow-sm">
+                    <div class="flex justify-between items-center mb-1">
+                        <span id="displayFlightNum" class="font-bold text-sm font-mono tracking-wide"></span>
+                        <span id="displayStatusBadge" class="text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"></span>
+                    </div>
+                    <div class="text-xs font-light opacity-90">
+                        <span id="displayRouteFrom" class="font-medium"></span> ➔ <span id="displayRouteTo" class="font-medium"></span>
+                    </div>
+                </div>
+
+                <div id="disruptionAlertCard" class="hidden bg-rose-50 border border-rose-200 p-3 rounded-xl space-y-2 animate-bounce">
+                    <p class="text-[11px] text-rose-800 font-semibold">⚠️ <strong>Structural Disruption Intercepted:</strong> Avoid call center hold queues. Use our direct system override rule to rebook instantly.</p>
+                    <button onclick="handleAutomatedRebook()" class="w-full bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold py-2 rounded-lg transition uppercase tracking-wider">Execute Free Flight Shift</button>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl space-y-2 shadow-inner">
+                    <h3 class="font-bold text-xs text-slate-700 border-b border-slate-200 pb-1 uppercase tracking-wide">Modify Ancillary Allocations</h3>
+                    <div>
+                        <label class="block text-[10px] text-slate-500 font-bold mb-0.5 uppercase">Meal Requirement</label>
+                        <select id="selectMeal" class="w-full border bg-white rounded-md p-1.5 text-xs outline-none">
+                            <option value="Standard">Standard Flight Catering</option>
+                            <option value="Vegetarian">Asian Veg Combo</option>
+                            <option value="Vegan">Strict Vegan Plate</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-500 font-bold mb-0.5 uppercase">Seat Assignment</label>
+                        <input type="text" id="inputSeat" class="w-full border bg-white rounded-md p-1.5 text-xs font-mono uppercase outline-none">
+                    </div>
+                    <button onclick="handleAncillaryUpdate()" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-[10px] font-bold py-1.5 rounded-lg transition uppercase tracking-widest mt-1">Commit Selections</button>
+                </div>
+
+                <button onclick="exitDashboardSession()" class="w-full text-center text-[10px] text-slate-400 hover:text-slate-600 uppercase tracking-widest pt-1 block">Exit Itinerary Session</button>
+            </div>
+
+            <p id="errorBox" class="text-rose-600 text-xs text-center mt-2 hidden font-bold tracking-wide bg-rose-50 border border-rose-100 py-1.5 rounded-lg"></p>
+        </div>
+    </div>
+
+    <script>
+        const BASE_API_URL = 'http://localhost:5000/api';
+        let savedActivePnr = '';
+        let failedLoginAttempts = 0; // State machine variable tracker
+
+        function switchTab(target) {
+            const tabBook = document.getElementById('tabBook');
+            const tabManage = document.getElementById('tabManage');
+            const viewBook = document.getElementById('viewBookPanel');
+            const viewManage = document.getElementById('viewManageLoginPanel');
+            const viewDash = document.getElementById('viewDashboardPanel');
+            
+            showErrorBanner('');
+
+            if (target === 'book') {
+                tabBook.className = "w-1/2 py-3 text-center border-b-2 border-blue-600 text-blue-600 bg-white font-bold";
+                tabManage.className = "w-1/2 py-3 text-center border-b-2 border-transparent hover:bg-slate-100";
+                viewBook.classList.remove('hidden');
+                viewManage.classList.add('hidden');
+                viewDash.classList.add('hidden');
+            } else {
+                tabManage.className = "w-1/2 py-3 text-center border-b-2 border-blue-600 text-blue-600 bg-white font-bold";
+                tabBook.className = "w-1/2 py-3 text-center border-b-2 border-transparent hover:bg-slate-100";
+                viewBook.classList.add('hidden');
+                
+                if (savedActivePnr !== '') {
+                    viewDash.classList.remove('hidden');
+                } else {
+                    viewManage.classList.remove('hidden');
+                }
+            }
+        }
+
+        async function executeNewBooking() {
+            const first = document.getElementById('bookFirst').value.trim();
+            const last = document.getElementById('bookLast').value.trim();
+            const selectData = document.getElementById('bookFlightSelect').value.split('|');
+            
+            showErrorBanner('');
+            document.getElementById('bookingSuccessCard').classList.add('hidden');
+
+            try {
+                const response = await fetch(`${BASE_API_URL}/bookings/new`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        passengerName: `${first} ${last}`,
+                        lastName: last,
+                        flightNumber: selectData[0],
+                        departure: selectData[1],
+                        arrival: selectData[2]
+                    })
+                });
+                const payload = await response.json();
+
+                if (response.status === 201) {
+                    document.getElementById('successGeneratedPnr').innerText = payload.booking.pnr;
+                    document.getElementById('bookingSuccessCard').classList.remove('hidden');
+                    document.getElementById('bookFirst').value = '';
+                    document.getElementById('bookLast').value = '';
+                } else {
+                    showErrorBanner(payload.message);
+                }
+            } catch (err) {
+                showErrorBanner("Networking Error: Cannot communicate with the API server cluster.");
+            }
+        }
+
+        async function verifyExistingBooking() {
+            const pnrInput = document.getElementById('inputPnr').value.trim();
+            const lastNameInput = document.getElementById('inputLastName').value.trim();
+            showErrorBanner('');
+
+            try {
+                const response = await fetch(`${BASE_API_URL}/bookings/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pnr: pnrInput, lastName: lastNameInput })
+                });
+                const payload = await response.json();
+
+                if (response.ok) {
+                    failedLoginAttempts = 0; // Clear failure count tracker
+                    savedActivePnr = payload.booking.pnr;
+                    renderPassengerDashboardView(payload.booking);
+                } else {
+                    failedLoginAttempts++;
+                    showErrorBanner(`${payload.message} (${failedLoginAttempts}/3 attempts)`);
+                    
+                    if (failedLoginAttempts >= 3) {
+                        document.getElementById('agentEscalationCard').classList.remove('hidden');
+                    }
+                }
+            } catch (err) {
+                showErrorBanner("Connection timed out communicating with backend drivers.");
+            }
+        }
+
+        function renderPassengerDashboardView(booking) {
+            document.getElementById('viewManageLoginPanel').classList.add('hidden');
+            document.getElementById('viewDashboardPanel').classList.remove('hidden');
+
+            document.getElementById('displayFlightNum').innerText = booking.flightNumber;
+            document.getElementById('displayRouteFrom').innerText = booking.departure;
+            document.getElementById('displayRouteTo').innerText = booking.arrival;
+            document.getElementById('selectMeal').value = booking.mealPreference;
+            document.getElementById('inputSeat').value = booking.seatNumber;
+            
+            const badge = document.getElementById('displayStatusBadge');
+            const box = document.getElementById('statusHeaderBox');
+            const disruption = document.getElementById('disruptionAlertCard');
+            
+            badge.innerText = booking.flightStatus;
+
+            if (booking.flightStatus === 'Delayed') {
+                box.className = "p-3 rounded-xl text-white bg-amber-500 font-medium shadow-md";
+                badge.className = "text-[9px] px-2 py-0.5 rounded-full uppercase font-bold bg-amber-700 text-white";
+                disruption.classList.remove('hidden');
+            } else {
+                box.className = "p-3 rounded-xl text-blue-900 bg-blue-50 border border-blue-200 font-medium shadow-sm";
+                badge.className = "text-[9px] px-2 py-0.5 rounded-full uppercase font-bold bg-blue-200 text-blue-800";
+                disruption.classList.add('hidden');
+            }
+        }
+
+        async function handleAncillaryUpdate() {
+            const meal = document.getElementById('selectMeal').value;
+            const seat = document.getElementById('inputSeat').value.trim();
+
+            try {
+                const res = await fetch(`${BASE_API_URL}/bookings/${savedActivePnr}/services`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mealPreference: meal, seatNumber: seat })
+                });
+                const payload = await res.json();
+                if (res.ok) {
+                    alert("✨ Transaction success! Options committed to MongoDB securely.");
+                } else {
+                    showErrorBanner(payload.message);
+                }
+            } catch (err) {
+                showErrorBanner("Write modification action pipeline broken.");
+            }
+        }
+
+        async function handleAutomatedRebook() {
+            try {
+                const res = await fetch(`${BASE_API_URL}/bookings/${savedActivePnr}/rebook`, { method: 'POST' });
+                const payload = await res.json();
+                if (res.ok) {
+                    alert("✈️ Disruption Overridden. Journey successfully rerouted via backup schedule vectors.");
+                    renderPassengerDashboardView(payload.booking);
+                } else {
+                    showErrorBanner(payload.message);
+                }
+            } catch (err) {
+                showErrorBanner("Critical runtime fault executing automated rebooking script.");
+            }
+        }
+
+        function exitDashboardSession() {
+            document.getElementById('viewDashboardPanel').classList.add('hidden');
+            document.getElementById('viewManageLoginPanel').classList.remove('hidden');
+            document.getElementById('inputPnr').value = '';
+            document.getElementById('inputLastName').value = '';
+            savedActivePnr = '';
+            failedLoginAttempts = 0;
+            document.getElementById('agentEscalationCard').classList.add('hidden');
+        }
+
+        function showErrorBanner(msg) {
+            const box = document.getElementById('errorBox');
+            if (msg) {
+                box.innerText = msg;
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>BlueWings Airlines | Conversational Booking</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="css/chat.css">
+
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <link rel="stylesheet" href="css/animations.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+
+                ✈
+
+                <h2>BlueWings</h2>
+
+            </div>
+
+            <button class="menu-btn active"
+                id="bookBtn">
+
+                ✈ Book Flight
+
+            </button>
+
+            <button class="menu-btn"
+                id="manageBtn">
+
+                🛄 Manage Booking
+
+            </button>
+
+            <button class="menu-btn"
+                id="statusBtn">
+
+                📍 Flight Status
+
+            </button>
+
+            <button class="menu-btn"
+                id="agentBtn">
+
+                💬 Talk to Agent
+
+            </button>
+
+        </aside>
+
+
+
+        <!-- Chat Window -->
+
+        <main class="chat-window">
+
+            <!-- Header -->
+
+            <header class="chat-header">
+
+                <div class="avatar">
+
+                    🤖
+
+                </div>
+
+                <div>
+
+                    <h3>
+
+                        BlueWings Assistant
+
+                    </h3>
+
+                    <span class="online">
+
+                        ● Online
+
+                    </span>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- Chat Area -->
+
+            <section id="chatMessages"
+                class="chat-messages">
+
+            </section>
+
+
+
+            <!-- Quick Replies -->
+
+            <div
+                id="quickReplies"
+                class="quick-replies">
+
+            </div>
+
+
+
+            <!-- Input -->
+
+            <div class="chat-input">
+
+                <input
+                    id="messageInput"
+                    type="text"
+                    placeholder="Type your message...">
+
+                <button
+                    id="sendBtn">
+
+                    Send
+
+                </button>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- Scripts -->
+
+    <script src="js/api.js"></script>
+
+    <script src="js/ui.js"></script>
+
+    <script src="js/chatbot.js"></script>
+
+    <script src="js/booking.js"></script>
+
+    <script src="js/manageBooking.js"></script>
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>

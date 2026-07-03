@@ -1,0 +1,78 @@
+/* Mobile */
+
+@media screen and (max-width:768px){
+
+    .app{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        padding:10px;
+    }
+
+    .logo{
+        width:100%;
+        margin-bottom:15px;
+    }
+
+    .menu-btn{
+        width:45%;
+        margin:5px;
+        font-size:14px;
+    }
+
+    .chat-header{
+        padding:15px;
+    }
+
+    .chat-messages{
+        padding:15px;
+    }
+
+    .bot-bubble,
+    .user-bubble{
+        max-width:85%;
+    }
+
+    .chat-input{
+        padding:10px;
+    }
+
+    .chat-input input{
+        font-size:14px;
+    }
+
+    .chat-input button{
+        padding:10px 15px;
+    }
+
+}
+
+/* Small Phones */
+
+@media screen and (max-width:480px){
+
+    .menu-btn{
+        width:100%;
+    }
+
+    .chat-header h3{
+        font-size:16px;
+    }
+
+    .avatar{
+        width:35px;
+        height:35px;
+        font-size:18px;
+    }
+
+    .quick-btn{
+        width:100%;
+        margin-bottom:8px;
+    }
+
+}

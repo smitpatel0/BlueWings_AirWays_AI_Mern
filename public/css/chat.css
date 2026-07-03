@@ -1,0 +1,221 @@
+/* Chat Messages */
+
+.bot-message{
+    display:flex;
+    margin:15px 0;
+}
+
+.user-message{
+    display:flex;
+    justify-content:flex-end;
+    margin:15px 0;
+}
+
+/* Message Bubbles */
+
+.bot-bubble{
+    background:white;
+    color:black;
+    padding:12px;
+    border-radius:10px;
+    max-width:65%;
+    box-shadow:0 0 5px lightgray;
+}
+
+.user-bubble{
+    background:#0b5ed7;
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    max-width:65%;
+}
+
+/* Time */
+
+.time{
+    display:block;
+    font-size:10px;
+    margin-top:5px;
+    text-align:right;
+    color:gray;
+}
+
+.user-bubble .time{
+    color:#dbe9ff;
+}
+
+/* Bot Typing */
+
+.typing{
+    background:white;
+    width:60px;
+    padding:10px;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-around;
+    margin:15px 0;
+}
+
+.typing span{
+    width:8px;
+    height:8px;
+    background:gray;
+    border-radius:50%;
+    animation:typing 1s infinite;
+}
+
+.typing span:nth-child(2){
+    animation-delay:0.2s;
+}
+
+.typing span:nth-child(3){
+    animation-delay:0.4s;
+}
+
+@keyframes typing{
+
+    0%{
+        opacity:0.3;
+    }
+
+    50%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0.3;
+    }
+
+}
+
+/* Flight Card */
+
+.flight-card{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:15px;
+    margin:15px 0;
+}
+
+.flight-card h3{
+    color:#0b5ed7;
+    margin-bottom:10px;
+}
+
+.flight-card p{
+    margin:6px 0;
+}
+
+.flight-card button{
+    margin-top:10px;
+    padding:10px 15px;
+    border:none;
+    background:#0b5ed7;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.flight-card button:hover{
+    background:#084298;
+}
+
+/* Booking Card */
+
+.booking-card{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:15px;
+    margin:15px 0;
+}
+
+.booking-card h3{
+    color:#0b5ed7;
+    margin-bottom:10px;
+}
+
+.booking-card p{
+    margin:5px 0;
+}
+
+/* Buttons */
+
+.button-group{
+    margin-top:15px;
+}
+
+.button-group button{
+    padding:10px 15px;
+    margin-right:10px;
+    margin-bottom:10px;
+    border:none;
+    border-radius:5px;
+    background:#0b5ed7;
+    color:white;
+    cursor:pointer;
+}
+
+.button-group button:hover{
+    background:#084298;
+}
+
+/* Chat Icons */
+
+.bot-icon{
+    width:35px;
+    height:35px;
+    background:#0b5ed7;
+    color:white;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-right:10px;
+    font-size:18px;
+}
+
+.user-icon{
+    width:35px;
+    height:35px;
+    background:#198754;
+    color:white;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-left:10px;
+    font-size:18px;
+}
+
+/* Input Boxes Inside Chat */
+
+.chat-input-box{
+    margin:10px 0;
+}
+
+.chat-input-box input,
+.chat-input-box select{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    margin-top:5px;
+}
+
+/* Action Button */
+
+.action-btn{
+    margin-top:10px;
+    padding:10px 15px;
+    background:#198754;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.action-btn:hover{
+    background:#084298;
+}
